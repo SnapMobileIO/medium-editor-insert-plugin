@@ -359,7 +359,16 @@
      */
 
     Images.prototype.uploadDone = function (e, data) {
-        $.proxy(this, 'showImage', data.result.files[0].url, data)();
+
+        // Accept "url" on the response instead of expecting response.files[0].url
+        var imageUrl = data.result.url;
+
+        // Set the base for the image if needed
+        if (this.options.imageBaseUrl) {
+            imageUrl = this.options.imageBaseUrl + imageUrl;
+        }
+
+        $.proxy(this, 'showImage', imageUrl, data)();
 
         this.core.clean();
         this.sorting();
